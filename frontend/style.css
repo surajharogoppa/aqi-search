@@ -1,0 +1,7 @@
+body{font-family:Arial;background:#f6f8fb} .container{max-width:800px;margin:20px auto;padding:20px}
+input{padding:10px;border:1px solid #ccc;border-radius:6px} button{padding:10px 14px;background:#007bff;color:#fff;border:0;border-radius:6px}
+.card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.1)} .hidden{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.poll{background:#eef5ff;padding:10px;border-radius:8px;text-align:center} .val{font-size:22px;font-weight:700}
+.error{background:#ffe0e0;border:1px solid #ffb6b6;padding:10px;border-radius:6px}
+pre{background:#222;color:#eee;padding:10px;border-radius:6px;max-height:300px;overflow:auto}

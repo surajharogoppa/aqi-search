@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head><meta charset='utf-8'><title>AQI Search</title>
+<link rel='stylesheet' href='style.css'></head>
+<body>
+<div class='container'>
+<h1>AQI Search</h1>
+<form id='searchForm'>
+<input id='cityInput' placeholder='Enter city' required>
+<button>Search</button>
+</form>
+<div id='error' class='error hidden'></div>
+<div id='result' class='card hidden'>
+<h2 id='cityName'></h2>
+<div id='meta'></div>
+<div class='aqi'>
+<div>AQI: <span id='aqiValue'></span></div>
+<div>Dominant Pollutant: <span id='domPoll'></span></div>
+<div>Time: <span id='aqTime'></span></div>
+</div>
+<h3>Pollutants</h3>
+<div id='pollutants' class='grid'></div>
+<details><summary>Raw</summary><pre id='raw'></pre></details>
+</div>
+</div>
+<script>
+const apiBase="http://127.0.0.1:8000/api/aqi";
+document.getElementById("searchForm").addEventListener("submit",async e=>{
+e.preventDefault();
+const c=document.getElementById("cityInput").value.trim();
+const res=document.getElementById("result");
+const err=document.getElementById("error");
+res.classList.add("hidden"); err.classList.add("hidden");
+try{
+const r=await fetch(apiBase+"?city="+encodeURIComponent(c));
+if(!r.ok) throw new Error((await r.json()).detail);
+const d=await r.json(); show(d);
+}catch(e){ err.textContent=e.message; err.classList.remove("hidden"); }
+});
+function show(d){
+document.getElementById("cityName").textContent=d.city.name;
+document.getElementById("aqiValue").textContent=d.aqi;
+document.getElementById("domPoll").textContent=d.dominentpol;
+document.getElementById("aqTime").textContent=d.time;
+const p=document.getElementById("pollutants"); p.innerHTML="";
+for(const k in d.iaqi){
+const div=document.createElement("div"); div.className="poll";
+div.innerHTML=`<strong>${k.toUpperCase()}</strong><div class='val'>${d.iaqi[k].v}</div>`;
+p.appendChild(div);
+}
+document.getElementById("raw").textContent=JSON.stringify(d.raw_vendor_response,null,2);
+document.getElementById("result").classList.remove("hidden");
+}
+</script>
+</body></html>
